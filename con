@@ -5,6 +5,82 @@ import sys, os, cPickle
 
 dict = { }
 
+def doc():
+    '''
+HELP:
+    con [option]
+
+DESCRIPTION:
+    "con" is a small program written by python, you can add, edit, delete, and
+    search your contact.
+
+OPTINS:
+    add:
+        HELP:
+            (./con) add <name> <kind(Phone or Email)> <info>
+
+        DESCRIPTION:
+            "add" is to add informaiton in your dictonary.
+
+        OPTIONS:
+            <name> This is the name you want to add in your book.
+
+            <kind> which kind of information do you want to add?
+                    a Phonenumber or Email? Just Type it here.
+            <info> It is the number or email address you want to
+                   add.
+        COPYRIGHT:
+
+    mv:
+        HELP:
+            (./con) mv <name> <kind(Phone or Email)> <newinfo>
+
+        DESCRIPTION:
+            "mv" is to edit informaiton in your dictonary of a persion.
+
+        OPTIONS:
+            <name> This is the name you want to edit in your book.
+
+            <kind> which kind of information do you want to edit?
+                   a Phonenumber or Email? Just Type it here.
+            <newinfo> It is the newnumber or newemail address you
+                   want to
+        COPYRIGHT:
+
+    rm:
+        HELP:
+            (./con) rm [name] [kind(Phone or Email)]
+
+        DESCRIPTION:
+            "rm" is to delete information in your dictonary. As you see, there are
+            two arguments. But you can use just one argument to rm a information of
+            a person. And use two arguments to rm some information of a person's.
+
+        OPTION:
+            [name] The name in your dictionary of the person.
+            [Kind(Phone or Email)] The information of a person's.
+
+        COPYRIGHT:
+
+    find:
+        HELP:
+            (./con) find [name] [kind(Phone or Email)]
+
+        DESCRIPTION:
+            "find" is to find information wheather in your dictonary. As you see, there
+            are two arguments. But you can use just one argument to find a information of
+            a person. And use two arguments to find some information of a person's.
+
+        OPTION:
+            [name] The name in your dictionary of the person.
+            [Kind(Phone or Email)] The information of a person's.
+
+        COPYRIGHT:
+
+COPYRIGHT:
+    '''
+
+
 class Persion():
     '''This class "Persion" have "name" "info"'''
     def __init__(self, pname):
@@ -143,7 +219,7 @@ COPYRIGHT:
 
 def mv(name, kind, info):
     '''
- HELP:
+HELP:
     (./con) mv <name> <kind(Phone or Email)> <newinfo>
 
 DESCRIPTION:
@@ -173,6 +249,7 @@ COPYRIGHT:
 
 if len(sys.argv) < 2:
     print "Please input your command      ...Exit\nUse the option 'help' to know more"
+    print doc.__doc__
     sys.exit()
 else:
     try: #read file
@@ -221,14 +298,11 @@ elif sys.argv[1] == 'find':
 
 
 elif sys.argv[1] == 'help':
-    print 'this is help'
-
-
+    print doc.__doc__
 elif sys.argv[1] == 'ls':
     ls()
 else:
-    print "print help"
-
+    print doc.__doc__
 #write to file.
 datafile = file('data', 'w')
 cPickle.dump(dict, datafile)
