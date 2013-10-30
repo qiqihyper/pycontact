@@ -16,7 +16,7 @@ class Persion():
             print ('%s: %s') % (ikind, iinfo)
         return ''
 
-print 'sys.argv[] is: ', sys.argv, '\nlen(sys.argv) is: ', len(sys.argv)
+#print 'sys.argv[] is: ', sys.argv, '\nlen(sys.argv) is: ', len(sys.argv)
 
 def add(name, kind, info):
     '''
@@ -35,10 +35,10 @@ OPTIONS:
            add.
 COPYRIGHT:
     '''
-    nname = repr(name)
-    nname = Persion(name)
-    dict[name] = nname
-    nname.pinfo[kind] = info
+    if name not in dict:
+        nname = Persion(name)
+        dict[name] = nname
+    dict[name].pinfo[kind] = info
     print 'Add "%s" %s:%s  Successful!' % (name, kind, info)
 
 def ls():
@@ -55,7 +55,6 @@ def confirm():
     else:
         print "Invilid Input.    ...Exit"
         sys.exit()
-
 def rm(var):
     '''
 HELP:
@@ -63,7 +62,7 @@ HELP:
 
 DESCRIPTION:
     "rm" is to delete information in your dictonary. As you see, there are
-    tew arguments. But you can use just one argument to rm a information of
+    two arguments. But you can use just one argument to rm a information of
     a person. And use two arguments to rm some information of a person's.
 
 OPTION:
@@ -72,9 +71,9 @@ OPTION:
 
 COPYRIGHT:
     '''
-    print var
+    #print var
     length = len(var)
-    print "length = ", length
+    #print "length = ", length
     if length > 2:
         print "Please Enter a right argument."
         print rm.__doc__
@@ -93,15 +92,86 @@ COPYRIGHT:
                     del dict[var[0]].pinfo[var[1]]
                     print 'Delete "%s" of "%s".' % (var[1], dict[var[0]].pname)
             else:
-                print '"%s" is not the information of %s' % (var[1], dict[var[0]].pname)
+                print '"%s" is not the information of "%s"' % (var[1], dict[var[0]].pname)
         else:
             print 'Sorry, "%s" is not in your dictonary.' % var[0]
     else:
         print "Please Enter a right argument."
         print rm.__doc__
 
+def find(var):
+    '''
+HELP:
+    (./con) find [name] [kind(Phone or Email)]
 
-if len(sys.argv) <= 1:
+DESCRIPTION:
+    "find" is to find information wheather in your dictonary. As you see, there
+    are two arguments. But you can use just one argument to find a information of
+    a person. And use two arguments to find some information of a person's.
+
+OPTION:
+    [name] The name in your dictionary of the person.
+    [Kind(Phone or Email)] The information of a person's.
+
+COPYRIGHT:
+    '''
+    length = len(var)
+    #print "length = ", length
+    if length > 2:
+        print "Please Enter a right argument."
+        print find.__doc__
+    elif length == 1:
+        if var[0] in dict:
+            print '"%s" is in your dictionary' % var[0]
+            print dict[var[0]]
+        else:
+            print 'Sorry, "%s" is not in your dictonary.' % var[0]
+    elif length == 2:
+        if var[0] in dict:
+            if var[1] in dict[var[0]].pinfo:
+                print '"%s" of "%s" is in.' % (var[1], dict[var[0]].pname)
+                print dict[var[0]]
+            else:
+                print '"%s" is not the information of "%s"' % (var[1], dict[var[0]].pname)
+                print 'But we can find that :'
+                print dict[var[0]]
+        else:
+            print 'Sorry, "%s" is not in your dictonary.' % var[0]
+    else:
+        print "Please Enter a right argument."
+        print rm.__doc__
+
+def mv(name, kind, info):
+    '''
+ HELP:
+    (./con) mv <name> <kind(Phone or Email)> <newinfo>
+
+DESCRIPTION:
+    "mv" is to edit informaiton in your dictonary of a persion.
+
+OPTIONS:
+    <name> This is the name you want to edit in your book.
+
+    <kind> which kind of information do you want to edit?
+           a Phonenumber or Email? Just Type it here.
+    <newinfo> It is the newnumber or newemail address you
+           want to
+COPYRIGHT:
+    '''
+    find([name, kind])
+    add(name, kind, info)
+
+    print "\nAfter Edit is That"
+    print dict[name]
+
+
+
+
+
+
+
+
+if len(sys.argv) < 2:
     print "Please input your command      ...Exit\nUse the option 'help' to know more"
     sys.exit()
 else:
@@ -112,9 +182,9 @@ else:
         pass
 
 if sys.argv[1] == 'add':
-    print 'This is add function'
+    #print 'This is add function'
     if len(sys.argv) < 5:
-        print "\nThere isn't enough information to add!"
+        print "There isn't enough information to add!"
         print add.__doc__
         sys.exit()
     else:
@@ -123,21 +193,37 @@ if sys.argv[1] == 'add':
 
 elif sys.argv[1] == 'mv':
     print "This is mv"
+    if len(sys.argv) < 5:
+        print "There isn't enough information to edit!"
+        print mv.__doc__
+        sys.exit()
+    else:
+        mv(sys.argv[2], sys.argv[3], sys.argv[4])
+
+elif sys.argv[1] == 'rm':
+    #print "This is rm"
     if len(sys.argv) < 3:
-        print "\nThere is nothing to delete. Please enter the key you to delete."
+        print "There is nothing to delete. Please enter the key you to delete."
         print rm.__doc__
         sys.exit()
     else:
         rm(sys.argv[2:])
 
-elif sys.argv[1] == 'rm':
-    rm(sys.argv[2:])
-
 
 elif sys.argv[1] == 'find':
     print 'This is find'
+    if len(sys.argv) < 3:
+        print "Please input what do you want to find for     ...Exit"
+        print find.__doc__
+        sys.exit()
+    else:
+        find(sys.argv[2:])
+
+
 elif sys.argv[1] == 'help':
     print 'this is help'
+
+
 elif sys.argv[1] == 'ls':
     ls()
 else:
