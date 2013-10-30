@@ -1,0 +1,56 @@
+#!/usr/bin/python
+# FileName: con
+
+import sys, os, cPickle
+
+#def read_data():
+    #datafile = file('data', 'rw')
+    #dict = cPickle.load(datafile)
+dict = { }
+
+class Persion():
+    '''This class "Persion" have "name" "info"'''
+    def __init__(self, pname):
+        self.pname = pname
+        self.pinfo = { }
+    def __str__(self):
+        print 'Name:', self.pname,
+        for ikind, iinfo in self.pinfo.items():
+            print ('%s: %s') % (ikind, iinfo)
+        return '\n'
+
+print 'sys.argv[] is: ', sys.argv, '\nlen(sys.argv) is: ', len(sys.argv)
+
+def add(name, kind, info):
+    nname = repr(name)
+    print name
+    nname = Persion(name)
+    dict[name] = nname
+    nname.pinfo[kind] = info
+    print dict
+    datafile = file('data', 'w')
+    cPickle.dump(dict, datafile)
+
+if len(sys.argv) <= 1:
+    print "Please input your command. Exit."
+    sys.exit()
+else:
+    print '###############'
+    try:
+        datafile = file('data', 'r')
+        dict = cPickle.load(datafile)
+        print '*************'
+        print dict
+    except:
+        pass
+
+if sys.argv[1] == 'add':
+    print 'This is add function'
+    add(sys.argv[2], sys.argv[3], sys.argv[4])
+if sys.argv[1] == 'mv':
+    print "This is mv"
+if sys.argv[1] == 'rm':
+    print 'This is rm'
+if sys.argv[1] == 'find':
+    print 'This is find'
+
