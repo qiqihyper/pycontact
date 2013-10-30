@@ -1,1 +1,1 @@
-This is a small contact program written by Pytho.
+This is a small contact program written by Python.
