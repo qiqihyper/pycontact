@@ -3,9 +3,6 @@
 
 import sys, os, cPickle
 
-#def read_data():
-    #datafile = file('data', 'rw')
-    #dict = cPickle.load(datafile)
 dict = { }
 
 class Persion():
@@ -14,43 +11,139 @@ class Persion():
         self.pname = pname
         self.pinfo = { }
     def __str__(self):
-        print 'Name:', self.pname,
+        print 'Name:', self.pname
         for ikind, iinfo in self.pinfo.items():
             print ('%s: %s') % (ikind, iinfo)
-        return '\n'
+        return ''
 
 print 'sys.argv[] is: ', sys.argv, '\nlen(sys.argv) is: ', len(sys.argv)
 
 def add(name, kind, info):
+    '''
+HELP:
+    (./con) add <name> <kind(Phone or Email)> <info>
+
+DESCRIPTION:
+    "add" is to add informaiton in your dictonary.
+
+OPTIONS:
+    <name> This is the name you want to add in your book.
+
+    <kind> which kind of information do you want to add?
+           a Phonenumber or Email? Just Type it here.
+    <info> It is the number or email address you want to
+           add.
+COPYRIGHT:
+    '''
     nname = repr(name)
-    print name
     nname = Persion(name)
     dict[name] = nname
     nname.pinfo[kind] = info
-    print dict
-    datafile = file('data', 'w')
-    cPickle.dump(dict, datafile)
+    print 'Add "%s" %s:%s  Successful!' % (name, kind, info)
+
+def ls():
+    '''ls is a command that you can print information in our database.'''
+    for name,info in dict.items():
+        print info
+
+def confirm():
+    s = raw_input("Are you sure to delete? [Y/N] ")
+    if s == 'Y' or s == 'y':
+        return True
+    elif s == 'N' or s == 'n':
+        return False
+    else:
+        print "Invilid Input.    ...Exit"
+        sys.exit()
+
+def rm(var):
+    '''
+HELP:
+    (./con) rm [name] [kind(Phone or Email)]
+
+DESCRIPTION:
+    "rm" is to delete information in your dictonary. As you see, there are
+    tew arguments. But you can use just one argument to rm a information of
+    a person. And use two arguments to rm some information of a person's.
+
+OPTION:
+    [name] The name in your dictionary of the person.
+    [Kind(Phone or Email)] The information of a person's.
+
+COPYRIGHT:
+    '''
+    print var
+    length = len(var)
+    print "length = ", length
+    if length > 2:
+        print "Please Enter a right argument."
+        print rm.__doc__
+    elif length == 1:
+        if var[0] in dict:
+            if confirm():
+                del dict[var[0]]
+                print 'Delete "%s" in your dictionary' % var[0]
+        else:
+            print 'Sorry, "%s" is not in your dictonary.' % var[0]
+            sys.exit()
+    elif length == 2:
+        if var[0] in dict:
+            if var[1] in dict[var[0]].pinfo:
+                if confirm():
+                    del dict[var[0]].pinfo[var[1]]
+                    print 'Delete "%s" of "%s".' % (var[1], dict[var[0]].pname)
+            else:
+                print '"%s" is not the information of %s' % (var[1], dict[var[0]].pname)
+        else:
+            print 'Sorry, "%s" is not in your dictonary.' % var[0]
+    else:
+        print "Please Enter a right argument."
+        print rm.__doc__
+
 
 if len(sys.argv) <= 1:
-    print "Please input your command. Exit."
+    print "Please input your command      ...Exit\nUse the option 'help' to know more"
     sys.exit()
 else:
-    print '###############'
-    try:
+    try: #read file
         datafile = file('data', 'r')
         dict = cPickle.load(datafile)
-        print '*************'
-        print dict
     except:
         pass
 
 if sys.argv[1] == 'add':
     print 'This is add function'
-    add(sys.argv[2], sys.argv[3], sys.argv[4])
-if sys.argv[1] == 'mv':
-    print "This is mv"
-if sys.argv[1] == 'rm':
-    print 'This is rm'
-if sys.argv[1] == 'find':
-    print 'This is find'
+    if len(sys.argv) < 5:
+        print "\nThere isn't enough information to add!"
+        print add.__doc__
+        sys.exit()
+    else:
+        add(sys.argv[2], sys.argv[3], sys.argv[4])
 
+
+elif sys.argv[1] == 'mv':
+    print "This is mv"
+    if len(sys.argv) < 3:
+        print "\nThere is nothing to delete. Please enter the key you to delete."
+        print rm.__doc__
+        sys.exit()
+    else:
+        rm(sys.argv[2:])
+
+elif sys.argv[1] == 'rm':
+    rm(sys.argv[2:])
+
+
+elif sys.argv[1] == 'find':
+    print 'This is find'
+elif sys.argv[1] == 'help':
+    print 'this is help'
+elif sys.argv[1] == 'ls':
+    ls()
+else:
+    print "print help"
+
+#write to file.
+datafile = file('data', 'w')
+cPickle.dump(dict, datafile)
+datafile.close()
