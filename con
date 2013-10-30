@@ -15,7 +15,9 @@ DESCRIPTION:
     search your contact.
 
 OPTINS:
+
     add:
+
         HELP:
             (./con) add <name> <kind(Phone or Email)> <info>
 
@@ -30,8 +32,15 @@ OPTINS:
             <info> It is the number or email address you want to
                    add.
         COPYRIGHT:
+    
+    ls:
 
+        (./con) ls
+
+        ls is a command that you can print information in our database.
+    
     mv:
+
         HELP:
             (./con) mv <name> <kind(Phone or Email)> <newinfo>
 
@@ -48,6 +57,7 @@ OPTINS:
         COPYRIGHT:
 
     rm:
+
         HELP:
             (./con) rm [name] [kind(Phone or Email)]
 
@@ -63,6 +73,7 @@ OPTINS:
         COPYRIGHT:
 
     find:
+
         HELP:
             (./con) find [name] [kind(Phone or Email)]
 
